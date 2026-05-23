@@ -4193,7 +4193,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <Router basename="/conservart/">
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
