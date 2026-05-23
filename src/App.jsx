@@ -376,7 +376,7 @@ function ProductScroll() {
         <div style={{ width: isMobile ? '100%' : '46vw', display: 'flex', flexDirection: 'column', gap: '0', boxSizing: 'border-box' }}>
           <div style={{ position: 'relative', borderRadius: isMobile ? '16px' : '0 20px 20px 0', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', zIndex: 1 }}>
             <img
-              src="/images/frame_corner_ornate.png"
+              src="/conservart/images/frame_corner_ornate.png"
               style={{
                 width: '100%',
                 aspectRatio: isMobile ? '1/1' : '1.25/1',
@@ -437,7 +437,7 @@ function ProductScroll() {
         <div style={{ width: isMobile ? '100%' : '46vw', display: 'flex', flexDirection: 'column', gap: '0', boxSizing: 'border-box' }}>
           <div style={{ position: 'relative', borderRadius: isMobile ? '16px' : '20px 0 0 20px', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', zIndex: 1 }}>
             <img
-              src="/images/frame_corner_modern.png"
+              src="/conservart/images/frame_corner_modern.png"
               style={{
                 width: '100%',
                 aspectRatio: isMobile ? '1/1' : '1.25/1',
@@ -608,7 +608,7 @@ const FRAMES = [
     id: 'ornate-gold',
     name: 'Classic Ornate Gold',
     desc: 'Museum gilded profile',
-    img: '/images/real_frame_gold.png',
+    img: '/conservart/images/real_frame_gold.png',
     innerTop: '26.8%',
     innerLeft: '26.8%',
     innerWidth: '46.4%',
@@ -618,7 +618,7 @@ const FRAMES = [
     id: 'modern-black',
     name: 'Sleek Matte Black',
     desc: 'Minimal executive outline',
-    img: '/images/real_frame_black.png',
+    img: '/conservart/images/real_frame_black.png',
     innerTop: '23.5%',
     innerLeft: '23.5%',
     innerWidth: '53.0%',
@@ -628,7 +628,7 @@ const FRAMES = [
     id: 'natural-oak',
     name: 'Premium Natural Oak',
     desc: 'Solid wood gallery feel',
-    img: '/images/real_frame_wood.png',
+    img: '/conservart/images/real_frame_wood.png',
     innerTop: '27.0%',
     innerLeft: '27.0%',
     innerWidth: '46.0%',
@@ -638,7 +638,7 @@ const FRAMES = [
     id: 'white-float',
     name: 'Contemporary Floating White',
     desc: 'Pro canvas float gap',
-    img: '/images/real_frame_white.png',
+    img: '/conservart/images/real_frame_white.png',
     innerTop: '33.0%',
     innerLeft: '33.0%',
     innerWidth: '34.0%',
@@ -1312,7 +1312,7 @@ function Home() {
           zIndex: 0
         }}>
           <img
-            src="/images/hero_framing_1779456927091.png"
+            src="/conservart/images/hero_framing_1779456927091.png"
             alt="Master framer craftsmanship"
             style={{
               width: '100%',
@@ -1504,7 +1504,7 @@ function Home() {
 const MOULDING_SPECS = {
   classic: {
     title: "CLASSIC ORNATE COLLECTION",
-    img: "/images/chevron_stack_classic.png",
+    img: "/conservart/images/chevron_stack_classic.png",
     width: "3.5 inches (89mm)",
     rabbet: "1.25 inches (32mm)",
     core: "Gesso-primed solid pine with gold leaf gilding",
@@ -1513,7 +1513,7 @@ const MOULDING_SPECS = {
   },
   modern: {
     title: "MODERN MINIMALIST COLLECTION",
-    img: "/images/chevron_stack_modern.png",
+    img: "/conservart/images/chevron_stack_modern.png",
     width: "1.5 inches (38mm)",
     rabbet: "0.85 inches (22mm)",
     core: "Structured anodized hardwood with matte lacquer",
@@ -1522,7 +1522,7 @@ const MOULDING_SPECS = {
   },
   wood: {
     title: "NATURAL ARCHIVAL WOOD COLLECTION",
-    img: "/images/chevron_stack_wood.png",
+    img: "/conservart/images/chevron_stack_wood.png",
     width: "2.0 inches (51mm)",
     rabbet: "1.0 inch (25mm)",
     core: "Solid American Walnut or White Oak with protective oils",
@@ -1531,7 +1531,7 @@ const MOULDING_SPECS = {
   },
   floating: {
     title: "FLOATING CANVAS GALLERY PRO",
-    img: "/images/chevron_stack_floating.png",
+    img: "/conservart/images/chevron_stack_floating.png",
     width: "0.75 inch face, 2.5 inches depth",
     rabbet: "Deep shadowbox cavity",
     core: "Solid maple with clean internal mounting spacers",
@@ -2322,7 +2322,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
               className="moulding-card-hover"
             >
               <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>CLASSIC</h3>
-              <img src="/images/chevron_stack_classic.png" alt="Classic Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+              <img src="/conservart/images/chevron_stack_classic.png" alt="Classic Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
               <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
             </div>
 
@@ -2333,7 +2333,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
               className="moulding-card-hover"
             >
               <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>MODERN</h3>
-              <img src="/images/chevron_stack_modern.png" alt="Modern Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+              <img src="/conservart/images/chevron_stack_modern.png" alt="Modern Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
               <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
             </div>
 
@@ -2344,7 +2344,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
               className="moulding-card-hover"
             >
               <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>WOOD</h3>
-              <img src="/images/chevron_stack_wood.png" alt="Wood Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+              <img src="/conservart/images/chevron_stack_wood.png" alt="Wood Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
               <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
             </div>
 
@@ -2355,7 +2355,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
               className="moulding-card-hover"
             >
               <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>FLOATING PRO</h3>
-              <img src="/images/chevron_stack_floating.png" alt="Floating Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+              <img src="/conservart/images/chevron_stack_floating.png" alt="Floating Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
               <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
             </div>
           </div>
@@ -3102,7 +3102,7 @@ function Layout({ children }) {
             >
               {/* Storefront Image (Inside the frame, extended under frame to prevent white gaps) */}
               <img
-                src="/images/storefront.jpg"
+                src="/conservart/images/storefront.jpg"
                 alt="Conservart Monkland Storefront"
                 style={{ 
                   position: 'absolute',
@@ -3117,7 +3117,7 @@ function Layout({ children }) {
               />
               {/* Actual Frame Overlay */}
               <img
-                src="/images/custom_gold_frame.png"
+                src="/conservart/images/custom_gold_frame.png"
                 alt="Ornate Gold Frame"
                 style={{
                   position: 'absolute',
@@ -3589,7 +3589,7 @@ function About() {
             border: '1px solid rgba(255,255,255,0.08)'
           }}>
             <img
-              src="/images/storefront.jpg"
+              src="/conservart/images/storefront.jpg"
               alt="Conservart Monkland Storefront"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -4138,7 +4138,7 @@ function Contact() {
           <div className="luxury-card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', padding: 0, overflow: 'hidden', border: '1px solid var(--border)' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '220px' }}>
               <img
-                src="/images/storefront.jpg"
+                src="/conservart/images/storefront.jpg"
                 alt="Conservart Storefront and Gallery Entrance"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '220px', display: 'block' }}
               />
