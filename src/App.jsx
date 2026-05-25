@@ -2434,6 +2434,10 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
   const [matWidth, setMatWidth] = useState(2.0); // inches
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
+  // Auto-scroll interactive refs
+  const isHoveredRef = useRef(false);
+  const lastScrollTimeRef = useRef(0);
+
   // Glaring Simulator states inside the portfolio
   const [glarePosition, setGlarePosition] = useState(50);
   const [isDraggingGlare, setIsDraggingGlare] = useState(false);
@@ -2491,6 +2495,43 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
       setActiveFrame(null);
     }
   }, [activeFrame, isMobile, setActiveFrame]);
+
+  // Auto-scroll slideshow logic (advances every 3 seconds when active and idle)
+  useEffect(() => {
+    if (isMobile) return;
+
+    const handleScroll = () => {
+      lastScrollTimeRef.current = Date.now();
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    const interval = setInterval(() => {
+      // Don't auto-scroll if user is hovering over the container
+      if (isHoveredRef.current) return;
+
+      // Don't auto-scroll if user scrolled manually in the last 4 seconds
+      if (Date.now() - lastScrollTimeRef.current < 4000) return;
+
+      const trigger = ScrollTrigger.getById('portfolio-trigger');
+      if (trigger && trigger.isActive) {
+        // Find next slide index (0 to 5)
+        const nextIndex = (currentSlideIndex + 1) % 6;
+        const start = trigger.start;
+        const end = trigger.end;
+        const targetScroll = start + (end - start) * (nextIndex / 5);
+
+        window.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth'
+        });
+      }
+    }, 3000); // 3 seconds interval
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
+    };
+  }, [isMobile, currentSlideIndex]);
 
   useEffect(() => {
     if (isMobile) return;
@@ -2729,7 +2770,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
   const visualizerSize = 'clamp(580px, 74vh, 800px)';
 
   return (
-    <section ref={containerRef} style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#050505' }}>
+    <section ref={containerRef} onMouseEnter={() => { isHoveredRef.current = true; }} onMouseLeave={() => { isHoveredRef.current = false; }} style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#050505' }}>
       <div style={{
         height: '100vh',
         display: 'flex',
