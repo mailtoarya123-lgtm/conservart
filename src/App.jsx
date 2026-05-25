@@ -62,6 +62,32 @@ function SlantedDivider({ direction = 'up', from = 'transparent', to = '#0a0a0a'
   );
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Force cleanup of the GSAP pin-spacer from the Home page before resetting scroll
+    const portfolioTrigger = ScrollTrigger.getById('portfolio-trigger');
+    if (portfolioTrigger) {
+      portfolioTrigger.kill(true); // true = revert inline styles
+    }
+    ScrollTrigger.refresh();
+
+    try {
+      if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+        if (typeof window.lenis.resize === 'function') window.lenis.resize();
+        window.lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
+  return null;
+}
+
 function PageCurtain() {
   const location = useLocation();
   const [curtainState, setCurtainState] = useState('idle');
@@ -72,6 +98,15 @@ function PageCurtain() {
       prevPath.current = location.pathname;
       setCurtainState('enter');
       const timer1 = setTimeout(() => {
+        try {
+          if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+            window.lenis.scrollTo(0, { immediate: true });
+          } else {
+            window.scrollTo(0, 0);
+          }
+        } catch (e) {
+          window.scrollTo(0, 0);
+        }
         setCurtainState('exit');
       }, 500);
       const timer2 = setTimeout(() => {
@@ -100,6 +135,7 @@ function PageCurtain() {
         backgroundColor: '#0a0a0a',
         borderLeft: '2px solid var(--accent)',
         borderRight: '2px solid var(--accent)',
+        boxSizing: 'border-box',
         zIndex: 999999,
         pointerEvents: 'all'
       }}
@@ -635,6 +671,17 @@ const FRAMES = [
     innerHeight: '46.0%'
   },
   {
+    id: 'dark-walnut',
+    name: 'Rich Dark Walnut',
+    desc: 'Deep warm wood tones',
+    img: '/conservart/images/real_frame_wood.png',
+    filter: 'brightness(0.65) saturate(1.2) sepia(0.3) hue-rotate(-10deg)',
+    innerTop: '27.0%',
+    innerLeft: '27.0%',
+    innerWidth: '46.0%',
+    innerHeight: '46.0%'
+  },
+  {
     id: 'white-float',
     name: 'Contemporary Floating White',
     desc: 'Pro canvas float gap',
@@ -879,7 +926,7 @@ function FrameVisualizer({
             objectFit: 'contain',
             zIndex: 2,
             pointerEvents: 'none',
-            filter: 'drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8))'
+            filter: `drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75)) ${frameObj.filter || ''}`
           }}
         />
 
@@ -1269,16 +1316,407 @@ function FrameVisualizer({
       </div>
     </section>
   );
+}const SHOP_ITEMS = [
+  {
+    id: 'masterpiece-01',
+    title: '19th Century French Landscape',
+    category: 'Original Artwork',
+    price: '$4,500 CAD',
+    desc: 'An original oil on canvas featuring a serene French countryside, beautifully preserved and housed in a period-correct, museum-grade ornate gold frame.',
+    img: '/conservart/images/corporate_art_1779456943815.png',
+    badge: 'Masterpiece',
+    specs: {
+      frame: '22k Gold Leaf Gilded Ornate Wood Frame',
+      glass: '99% UV-Protective Museum Glass',
+      matboard: 'Acid-Free 8-Ply Cotton Rag Matboard (2.5")',
+      mounting: 'Archival Reversible T-Hinge Mount',
+      dimensions: '28" x 34" (External Dimensions)'
+    }
+  },
+  {
+    id: 'jersey-01',
+    title: 'Signed Vintage Hockey Jersey',
+    category: 'Sports Memorabilia',
+    price: '$1,800 CAD',
+    desc: 'A pristine, autographed vintage hockey jersey mounted in a deep shadowbox with UV-protective museum glass and archival matting.',
+    img: '/conservart/images/shop_signed_jersey.jpg',
+    badge: 'Featured Curation',
+    specs: {
+      frame: 'Deep Modern Black Hardwood Shadowbox (2.5" depth)',
+      glass: 'Tru Vue Museum Glass® (99% UV protection, anti-reflective)',
+      matboard: 'Charcoal Conservation Suede Matboard (1.5")',
+      mounting: 'Hand-Sewn Reversible Archival Stitching',
+      dimensions: '36" x 42" x 2.75" (External Dimensions)'
+    }
+  },
+  {
+    id: 'collage-01',
+    title: 'Vintage Archival Family Collage',
+    category: 'Archival Collage',
+    price: '$1,650 CAD',
+    desc: 'A custom, multi-opening archival display featuring historic family photographs, hand-drawn schematics, and letters, mounted in an elegant custom frame.',
+    img: '/conservart/images/shop_historical_collage.jpg',
+    badge: 'One-of-a-Kind',
+    specs: {
+      frame: 'Handcrafted Antique Silver Gilded Frame with Custom Filigree',
+      glass: 'Water White Premium Museum Glass',
+      matboard: 'Multi-Opening Conservation-Grade Slate Matboard',
+      mounting: 'Archival Photo Corners & Acid-Free Mounting Tape',
+      dimensions: '24" x 28" (External Dimensions)'
+    }
+  },
+  {
+    id: 'documents-01',
+    title: 'Royal Document & Medal Exhibition',
+    category: 'Archival Collage',
+    price: '$3,400 CAD',
+    desc: 'An exquisite museum-grade gallery display comprising historical letters, certificates, passports, and military honors, float-mounted on archival backing.',
+    img: '/conservart/images/shop_gallery_documents.png',
+    badge: 'Museum Collection',
+    specs: {
+      frame: 'Premium Walnut Hardwood with Gold Fillet Accent',
+      glass: 'Tru Vue Optium Museum Acrylic® (anti-reflective, shatterproof)',
+      matboard: 'Double Matboard with Gold Bevel Cut Accents',
+      mounting: 'Float Mounted using Japanese Mulberry Paper Hinges & Wheat Starch',
+      dimensions: '32" x 32" x 1.75" (External Dimensions)'
+    }
+  },
+  {
+    id: 'masterpiece-02',
+    title: 'Modern Abstract Composition',
+    category: 'Original Artwork',
+    price: '$2,800 CAD',
+    desc: 'A striking contemporary abstract painting, floating in a sleek, modern black hardwood frame that emphasizes the vibrant colors.',
+    img: '/conservart/images/private_art_1779456959009.png',
+    badge: 'Exclusive',
+    specs: {
+      frame: 'Sleek Modern Charcoal Float Frame',
+      glass: 'None (Framed float mount, varnished UV archival canvas protection)',
+      matboard: 'Floating Mount with 0.5" Shadow Gap',
+      mounting: 'Heavy-Duty Canvas Stretch Bars & Tension Brackets',
+      dimensions: '40" x 40" (External Dimensions)'
+    }
+  }
+];
+
+function ShopItemModal({ item, onClose }) {
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (item) {
+      setFormData({
+        name: '',
+        email: '',
+        message: `I am interested in acquiring the "${item.title}" (${item.price}). Please provide more details on authentication, framing conservation, and secure delivery logistics.`
+      });
+      setSubmitted(false);
+    }
+  }, [item]);
+
+  if (!item) return null;
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPos({ x, y });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email) return;
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }, 1000);
+  };
+
+  return (
+    <motion.div
+      className="shop-modal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="shop-modal-card"
+        initial={{ scale: 0.9, opacity: 0, y: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 30 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="shop-modal-close" onClick={onClose} aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="16" y1="2" x2="2" y2="16"></line>
+            <line x1="2" y1="2" x2="16" y2="16"></line>
+          </svg>
+        </button>
+
+        <div className="shop-modal-grid">
+          {/* Image Display Panel */}
+          <div className="shop-modal-image-col">
+            <div className="shop-gallery-spotlight"></div>
+            <div
+              className="shop-modal-img-wrap"
+              onMouseMove={handleMouseMove}
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              style={{ cursor: 'zoom-in' }}
+            >
+              <img
+                src={item.img}
+                alt={item.title}
+                style={{
+                  transform: isZoomed ? 'scale(2.2)' : 'scale(1)',
+                  transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                  transition: isZoomed ? 'none' : 'transform 0.4s ease'
+                }}
+              />
+            </div>
+            <div style={{ position: 'absolute', bottom: '1rem', left: '0', right: '0', textAlign: 'center', color: '#666', fontSize: '0.75rem', pointerEvents: 'none' }}>
+              Hover to examine archival details
+            </div>
+          </div>
+
+          {/* Details & Inquiry Panel */}
+          <div className="shop-modal-info-col">
+            <span className="shop-modal-category">{item.category}</span>
+            <h2 className="shop-modal-title">{item.title}</h2>
+            <div className="shop-modal-price">{item.price}</div>
+            
+            <p className="shop-modal-desc">{item.desc}</p>
+
+            <h3 className="shop-specs-title">Archival Spec Sheet</h3>
+            <ul className="shop-specs-list">
+              <li className="shop-spec-item">
+                <span className="shop-spec-label">Frame Profile:</span>
+                <span className="shop-spec-value">{item.specs.frame}</span>
+              </li>
+              <li className="shop-spec-item">
+                <span className="shop-spec-label">Glass Shield:</span>
+                <span className="shop-spec-value">{item.specs.glass}</span>
+              </li>
+              <li className="shop-spec-item">
+                <span className="shop-spec-label">Matboard:</span>
+                <span className="shop-spec-value">{item.specs.matboard}</span>
+              </li>
+              <li className="shop-spec-item">
+                <span className="shop-spec-label">Mount Style:</span>
+                <span className="shop-spec-value">{item.specs.mounting}</span>
+              </li>
+              <li className="shop-spec-item">
+                <span className="shop-spec-label">Outer Size:</span>
+                <span className="shop-spec-value">{item.specs.dimensions}</span>
+              </li>
+            </ul>
+
+            <h3 className="shop-inquiry-title">Gallery Acquisition Request</h3>
+            
+            {submitted ? (
+              <div className="shop-success-message">
+                <h4>Acquisition Inquiry Logged</h4>
+                <p>Thank you, {formData.name}. Our gallery concierge has received your request regarding the <strong>{item.title}</strong> and will follow up at <strong>{formData.email}</strong> within 24 hours to coordinate invoice, insurance, and transit logistics.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="shop-inquiry-form">
+                <div className="shop-form-group">
+                  <label htmlFor="modal-name">Name</label>
+                  <input
+                    id="modal-name"
+                    type="text"
+                    required
+                    className="shop-form-input"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                <div className="shop-form-group">
+                  <label htmlFor="modal-email">Email Address</label>
+                  <input
+                    id="modal-email"
+                    type="email"
+                    required
+                    className="shop-form-input"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="name@example.com"
+                  />
+                </div>
+                <div className="shop-form-group">
+                  <label htmlFor="modal-message">Inquiry Notes</label>
+                  <textarea
+                    id="modal-message"
+                    required
+                    rows="3"
+                    className="shop-form-input shop-form-textarea"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                </div>
+                <button type="submit" disabled={isSubmitting} className="shop-submit-btn">
+                  {isSubmitting ? 'Submitting Request...' : 'Send Acquisition Inquiry'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 }
 
+function ShopHighlights() {
+  const [selectedItem, setSelectedItem] = useState(null);
 
+  return (
+    <section style={{ padding: '100px 0', backgroundColor: '#050505', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <div className="container">
+        <div style={{ textAlign: 'center', marginBottom: 'var(--space-xl)' }}>
+          <span style={{ color: 'var(--accent)', letterSpacing: '0.2em', fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 600 }}>Exclusive Sales</span>
+          <h2 style={{ fontSize: '2.5rem', marginTop: '0.5rem', marginBottom: 'var(--space-xs)' }}>Featured Curations</h2>
+          <p style={{ color: '#888', maxWidth: '600px', margin: '0 auto', fontSize: '1rem' }}>
+            Acquire fully-framed, museum-grade masterpieces and authentic sports memorabilia from our private collection.
+          </p>
+        </div>
 
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 'var(--space-lg)', marginBottom: 'var(--space-xl)' }}>
+          {SHOP_ITEMS.slice(0, 3).map((item) => (
+            <div key={item.id} className="shop-card" onClick={() => setSelectedItem(item)}>
+              <div className="shop-image-container">
+                <div className="shop-gallery-spotlight"></div>
+                {item.badge && <div className="shop-badge">{item.badge}</div>}
+                <img src={item.img} alt={item.title} />
+              </div>
+              <div className="shop-content">
+                <span className="shop-category">{item.category}</span>
+                <h3 className="shop-title">{item.title}</h3>
+                <p className="shop-desc">{item.desc}</p>
+                <div className="shop-footer">
+                  <span className="shop-price">{item.price}</span>
+                  <button className="shop-btn" onClick={(e) => { e.stopPropagation(); setSelectedItem(item); }}>Inquire</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
+        <div style={{ textAlign: 'center' }}>
+          <Link to="/shop" className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1rem' }}>
+            View Full Shop Collection
+          </Link>
+        </div>
+      </div>
 
+      <AnimatePresence>
+        {selectedItem && (
+          <ShopItemModal item={selectedItem} onClose={() => setSelectedItem(null)} />
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
 
+function Shop() {
+  usePageTitle('Shop Exclusive Curations');
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const categories = ['All', 'Original Artwork', 'Sports Memorabilia', 'Archival Collage'];
+
+  const filteredItems = activeCategory === 'All'
+    ? SHOP_ITEMS
+    : SHOP_ITEMS.filter(item => item.category === activeCategory);
+
+  return (
+    <div style={{ backgroundColor: '#050505', color: '#fff', minHeight: '80vh', paddingBottom: 'var(--space-xl)' }}>
+      <section className="subpage-hero shop-hero">
+        <div className="container">
+          <span style={{ color: 'var(--accent)', letterSpacing: '0.2em', fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 600 }}>Acquire Masterpieces</span>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', color: '#fff', margin: '0.5rem 0 1rem', fontFamily: 'var(--font-heading)' }}>Curated Shop</h1>
+          <div style={{ width: '60px', height: '2px', backgroundColor: 'var(--accent)', margin: '0 auto' }}></div>
+        </div>
+      </section>
+
+      <div className="container" style={{ marginTop: 'var(--space-lg)' }}>
+        <p style={{ textAlign: 'center', color: '#ccc', maxWidth: '800px', margin: '0 auto var(--space-xl)', fontSize: '1.15rem', lineHeight: '1.8' }}>
+          Browse our exclusive selection of framed original artwork, authenticated sports memorabilia, and rare finds. Each piece is meticulously framed in-house using conservation-grade materials and is ready to hang.
+        </p>
+
+        {/* Filter categories tabs */}
+        <div className="shop-filters-container">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              className={`shop-filter-btn ${activeCategory === cat ? 'active' : ''}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {cat === 'All' ? 'All Curations' : cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Animated Products Grid */}
+        <motion.div layout className="shop-grid">
+          <AnimatePresence mode="popLayout">
+            {filteredItems.map((item) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.35 }}
+                key={item.id}
+                className="shop-card"
+                onClick={() => setSelectedItem(item)}
+              >
+                <div className="shop-image-container">
+                  <div className="shop-gallery-spotlight"></div>
+                  {item.badge && <div className="shop-badge">{item.badge}</div>}
+                  <img src={item.img} alt={item.title} />
+                </div>
+                <div className="shop-content">
+                  <span className="shop-category">{item.category}</span>
+                  <h3 className="shop-title">{item.title}</h3>
+                  <p className="shop-desc">{item.desc}</p>
+                  <div className="shop-footer">
+                    <span className="shop-price">{item.price}</span>
+                    <button className="shop-btn" onClick={(e) => { e.stopPropagation(); setSelectedItem(item); }}>Inquire</button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+        
+        <div style={{ marginTop: 'var(--space-xl)', padding: 'var(--space-lg)', backgroundColor: '#0a0a0a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Interested in a specific piece?</h3>
+          <p style={{ color: '#aaa', marginBottom: '1.5rem', maxWidth: '600px', margin: '0 auto 1.5rem' }}>
+            We handle all shop inquiries personally to ensure secure payment, shipping logistics, and guarantee authenticity. Please contact us to reserve an item.
+          </p>
+          <Link to="/contact" className="btn btn-outline" style={{ color: 'var(--accent)', borderColor: 'var(--accent)' }}>
+            Contact Sales Team
+          </Link>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {selectedItem && (
+          <ShopItemModal item={selectedItem} onClose={() => setSelectedItem(null)} />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 function Home() {
   const [activeFrame, setActiveFrame] = useState(null);
-  const heroRef = useRef(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleTryFrame = (style) => {
@@ -1289,198 +1727,7 @@ function Home() {
   };
 
   return (
-    <>
-      <section
-        ref={heroRef}
-        className="hero"
-        style={{
-          marginTop: 0,
-          paddingTop: 0,
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          overflow: 'hidden',
-          height: '100vh',
-          minHeight: '650px'
-        }}
-      >
-        {/* Hero Background Image */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0
-        }}>
-          <img
-            src="/conservart/images/hero_framing_1779456927091.png"
-            alt="Master framer craftsmanship"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: isMobile ? '75% center' : 'center',
-              display: 'block'
-            }}
-          />
-          {/* Dark overlay for text legibility */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(105deg, rgba(5,5,5,0.82) 0%, rgba(5,5,5,0.55) 55%, rgba(5,5,5,0.18) 100%)'
-          }} />
-          {/* Bottom mask to hide image artifacts at the bottom */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0, left: 0, right: 0,
-            height: '35vh',
-            background: 'linear-gradient(to top, #050505 0%, #050505 30%, transparent 100%)',
-            zIndex: 1
-          }} />
-        </div>
-
-        {/* Hero Content */}
-        <div
-          className="container"
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: isMobile ? 'center' : 'flex-start',
-            textAlign: isMobile ? 'center' : 'left',
-            paddingTop: isMobile ? '120px' : '0',
-            maxWidth: '1200px'
-          }}
-        >
-          {/* Eyebrow */}
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            style={{
-              display: 'inline-block',
-              color: 'var(--accent)',
-              letterSpacing: '0.12rem',
-              fontSize: '0.72rem',
-              textTransform: 'uppercase',
-              fontWeight: 700,
-              marginBottom: '1rem'
-            }}
-          >
-            Montreal · Since 1986
-          </motion.span>
-
-          {/* Main Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            style={{
-              fontSize: isMobile ? 'clamp(1.6rem, 5.5vw, 2.2rem)' : 'clamp(2rem, 3vw, 3.2rem)',
-              fontFamily: 'var(--font-heading)',
-              lineHeight: 1.2,
-              letterSpacing: '0.01em',
-              color: '#fff',
-              margin: 0,
-              marginBottom: '1.25rem',
-              maxWidth: isMobile ? '100%' : '600px',
-              textShadow: '0 4px 24px rgba(0,0,0,0.5)'
-            }}
-          >
-            Master Framer
-            <br />
-            <span style={{ color: 'var(--accent)' }}>for Corporate</span>
-            <br />
-            &amp; Private Clients
-          </motion.h1>
-
-          {/* Sub-headline */}
-          <motion.p
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            style={{
-              fontSize: isMobile ? '0.9rem' : '1rem',
-              color: 'rgba(255,255,255,0.8)',
-              lineHeight: 1.7,
-              letterSpacing: '0.01em',
-              marginBottom: '2rem',
-              maxWidth: isMobile ? '100%' : '500px',
-              textShadow: '0 2px 8px rgba(0,0,0,0.4)'
-            }}
-          >
-            All quality materials — protecting art for a lifetime.
-          </motion.p>
-
-          {/* Google Reviews Badge */}
-          <motion.a
-            href="https://g.co/kgs/conservart"
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.6rem',
-              marginBottom: '2.25rem',
-              padding: '0.55rem 1.1rem',
-              background: 'rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255,255,255,0.14)',
-              borderRadius: '50px',
-              textDecoration: 'none',
-              cursor: 'pointer'
-            }}
-          >
-            {/* Google "G" logo */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-            </svg>
-            <span style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '1px' }}>★★★★★</span>
-            <span style={{ color: '#E0E0E0', fontSize: '0.85rem', fontWeight: 600 }}>5.0 on Google Reviews</span>
-          </motion.a>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
-            className="cta-buttons-container"
-            style={{
-              display: 'flex',
-              gap: isMobile ? '0.75rem' : '1.25rem',
-              justifyContent: isMobile ? 'center' : 'flex-start',
-              alignItems: 'center',
-              flexWrap: 'wrap'
-            }}
-          >
-            <Link
-              to="/corporate"
-              className="btn btn-glass"
-              style={{ padding: isMobile ? '0.85rem 1.4rem' : '1rem 2.2rem', fontSize: isMobile ? '0.82rem' : '0.92rem', whiteSpace: 'nowrap' }}
-            >
-              Our Services
-            </Link>
-            <a
-              href="tel:+15144853543"
-              className="btn"
-              style={{ background: '#fff', color: '#000', fontWeight: '700', border: 'none', padding: isMobile ? '0.85rem 1.4rem' : '1rem 2.2rem', fontSize: isMobile ? '0.82rem' : '0.92rem', whiteSpace: 'nowrap' }}
-            >
-              Call Us Now
-            </a>
-          </motion.div>
-        </div>
-
-        <SlantedDivider direction="up" to="#0a0a0a" absolute={true} />
-      </section>
-
-
+    <div className="home-page-container">
       {/* Visual Moulding Portfolio containing the integrated Frame Visualizer */}
       <MouldingPortfolio
         onTryFrame={handleTryFrame}
@@ -1495,9 +1742,14 @@ function Home() {
         <FrameAnatomy />
       </div>
 
+      <SlantedDivider direction="down" from="#0a0a0a" to="#050505" />
+
+      {/* Featured Shop Collection */}
+      <ShopHighlights />
+
       {/* Customer Testimonials reviews grid */}
       <Testimonials />
-    </>
+    </div>
   );
 }
 
@@ -1580,7 +1832,7 @@ function SingleFramePreview({
           objectFit: 'contain',
           zIndex: 2,
           pointerEvents: 'none',
-          filter: 'drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75))'
+          filter: `drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75)) ${frameObj.filter || ''}`
         }}
       />
 
@@ -1759,33 +2011,31 @@ function FrameCustomizerControls({
     );
   }
 
-  // Floating horizontal toolbar design for desktop
+  // Floating vertical sidebar design for desktop (single item per row layout)
   return (
     <div className="customizer-controls-container" style={{
       display: 'flex',
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
-      gap: '2.5rem',
-      padding: '0.75rem 2rem',
+      gap: '1.5rem',
+      padding: '1.75rem 0.75rem',
       background: 'rgba(15, 15, 15, 0.65)',
       backdropFilter: 'blur(20px)',
       WebkitBackdropFilter: 'blur(20px)',
       border: '1px solid rgba(255, 255, 255, 0.08)',
-      borderRadius: '20px',
+      borderRadius: '24px',
       boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-      width: 'fit-content',
-      margin: '0 auto',
+      width: '80px',
       boxSizing: 'border-box'
     }}>
       {/* 1. Select Artwork */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem' }}>
           <span style={{ background: 'var(--accent)', color: '#000', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 'bold' }}>1</span>
-          <h4 style={{ color: '#fff', fontSize: '0.8rem', margin: 0, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Art</h4>
+          <h4 style={{ color: '#fff', fontSize: '0.7rem', margin: 0, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Art</h4>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.4rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', alignItems: 'center' }}>
           {ART_PRESETS.map((art) => (
             <button
               key={art.id}
@@ -1795,8 +2045,8 @@ function FrameCustomizerControls({
                 border: selectedArt === art.url ? '2px solid var(--accent)' : '1px solid rgba(255,255,255,0.15)',
                 borderRadius: '4px',
                 overflow: 'hidden',
-                width: '28px',
-                height: '28px',
+                width: '32px',
+                height: '32px',
                 padding: 0,
                 cursor: 'pointer',
                 boxShadow: selectedArt === art.url ? '0 0 6px rgba(212, 175, 55, 0.3)' : 'none',
@@ -1812,34 +2062,34 @@ function FrameCustomizerControls({
         <label className="upload-dropzone-compact" style={{
           border: '1px dashed rgba(255, 255, 255, 0.2)',
           borderRadius: '4px',
-          padding: '0.2rem 0.5rem',
+          padding: '0.25rem 0.1rem',
           textAlign: 'center',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.3rem',
+          justifyContent: 'center',
           background: 'rgba(255, 255, 255, 0.02)',
           transition: 'all 0.2s ease',
-          height: '28px',
+          width: '100%',
+          maxWidth: '48px',
           boxSizing: 'border-box'
         }}>
           <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
-          <span style={{ fontSize: '0.85rem' }}>🖼️</span>
-          <span style={{ color: 'var(--accent)', fontWeight: 500, fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Upload</span>
+          <span style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>+ Up</span>
         </label>
       </div>
 
       {/* Divider */}
-      <div style={{ width: '1px', height: '24px', backgroundColor: 'rgba(255, 255, 255, 0.12)' }} />
+      <div style={{ width: '28px', height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.12)' }} />
 
       {/* 2. Archival Matboard */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem' }}>
           <span style={{ background: 'var(--accent)', color: '#000', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 'bold' }}>2</span>
-          <h4 style={{ color: '#fff', fontSize: '0.8rem', margin: 0, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Mat</h4>
+          <h4 style={{ color: '#fff', fontSize: '0.7rem', margin: 0, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Mat</h4>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
           {MAT_COLORS.map((color) => (
             <button
               key={color.hex}
@@ -1860,8 +2110,8 @@ function FrameCustomizerControls({
           ))}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ color: '#aaa', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Width:</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem', width: '100%', padding: '0 0.25rem' }}>
+          <span style={{ color: '#aaa', fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>W: {matWidth.toFixed(1)}"</span>
           <input
             type="range"
             min="0.0"
@@ -1870,7 +2120,7 @@ function FrameCustomizerControls({
             value={matWidth}
             onChange={(e) => setMatWidth(parseFloat(e.target.value))}
             style={{
-              width: '80px',
+              width: '100%',
               height: '3px',
               borderRadius: '1.5px',
               background: '#333',
@@ -1879,7 +2129,6 @@ function FrameCustomizerControls({
               accentColor: 'var(--accent)'
             }}
           />
-          <span style={{ color: 'var(--accent)', fontWeight: 'bold', fontSize: '0.75rem', width: '28px', textAlign: 'left' }}>{matWidth.toFixed(1)}"</span>
         </div>
       </div>
     </div>
@@ -1958,7 +2207,7 @@ function GlazingSimulator({ selectedArt, matColor, matWidth }) {
             objectFit: 'contain',
             zIndex: 4,
             pointerEvents: 'none',
-            filter: 'drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75))'
+            filter: `drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75)) ${frameObj.filter || ''}`
           }}
         />
 
@@ -2124,7 +2373,7 @@ const PORTFOLIO_SLIDES = [
     category: "01 — ARCHIVAL ARTISTRY",
     title: <>Elevating <span style={{ color: "var(--accent)" }}>Frame</span> design to Museum Standard.</>,
     desc: "Conservart has worked with Montreal's finest galleries, collectors, and corporate spaces. Our non-linear horizontal tour showcases the materials and technical details behind our award-winning framing process.",
-    frameId: "natural-oak",
+    frameId: "dark-walnut",
     isGlazing: false
   },
   {
@@ -2305,7 +2554,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
 
   if (isMobile) {
     return (
-      <section className="section" style={{ backgroundColor: '#050505', position: 'relative', zIndex: 10 }}>
+      <section className="section" style={{ backgroundColor: '#050505', position: 'relative', zIndex: 10, paddingTop: '120px' }}>
         <div className="container" style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
           <h2 style={{ fontSize: '2.5rem', marginBottom: 'var(--space-sm)' }}>Our Collections</h2>
           <p style={{ color: '#ccc', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem' }}>
@@ -2492,6 +2741,26 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
         padding: '2vh 0'
       }}>
 
+        {!isMobile && (
+          <div style={{
+            position: 'absolute',
+            left: '40px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 100
+          }}>
+            <FrameCustomizerControls
+              selectedArt={selectedArt}
+              setSelectedArt={setSelectedArt}
+              matColor={matColor}
+              setMatColor={setMatColor}
+              matWidth={matWidth}
+              setMatWidth={setMatWidth}
+              isMobile={false}
+            />
+          </div>
+        )}
+
         {/* Centerpiece Area: Centered on screen */}
         <div style={{
           position: 'relative',
@@ -2500,7 +2769,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          transform: 'translateY(-12vh) translateX(7vw)',
+          transform: 'translateY(-4vh) translateX(7vw)',
           zIndex: 2,
           boxSizing: 'border-box'
         }}>
@@ -2667,7 +2936,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
                       width: visualizerSize,
                       height: visualizerSize,
                       objectFit: 'contain',
-                      filter: 'drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75))',
+                      filter: `drop-shadow(0 15px 30px rgba(0, 0, 0, 0.75)) ${frameObj.filter || ''}`,
                       pointerEvents: 'none'
                     }}
                   />
@@ -2755,7 +3024,7 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
 
         </div>
 
-        {/* Bottom Section: Floating Toolbar and Dots Navigator stacked */}
+        {/* Bottom Section: Dots Navigator */}
         <div style={{
           position: 'absolute',
           bottom: '2vh',
@@ -2770,18 +3039,6 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
           zIndex: 10,
           boxSizing: 'border-box'
         }}>
-          {!isMobile && (
-            <FrameCustomizerControls
-              selectedArt={selectedArt}
-              setSelectedArt={setSelectedArt}
-              matColor={matColor}
-              setMatColor={setMatColor}
-              matWidth={matWidth}
-              setMatWidth={setMatWidth}
-              isMobile={false}
-            />
-          )}
-
           {/* Slide Navigator Dots Overlay */}
           <div style={{
             display: 'flex',
@@ -2984,6 +3241,7 @@ function Layout({ children }) {
             <Link to="/" className={isActive('/') ? 'nav-link-active' : ''} style={{ color: '#fff' }}>Home</Link>
             <Link to="/corporate" className={isActive('/corporate') ? 'nav-link-active' : ''} style={{ color: '#fff' }}>Corporate</Link>
             <Link to="/private" className={isActive('/private') ? 'nav-link-active' : ''} style={{ color: '#fff' }}>Private</Link>
+            <Link to="/shop" className={isActive('/shop') ? 'nav-link-active' : ''} style={{ color: '#fff' }}>Shop</Link>
             <Link to="/about" className={isActive('/about') ? 'nav-link-active' : ''} style={{ color: '#fff' }}>About Us</Link>
             <Link to="/contact" className={isActive('/contact') ? 'nav-link-active' : ''} style={{ color: '#fff' }}>Contact</Link>
           </nav>
@@ -3028,6 +3286,7 @@ function Layout({ children }) {
                 <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Home</Link>
                 <Link to="/corporate" className={`mobile-nav-link ${isActive('/corporate') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Corporate</Link>
                 <Link to="/private" className={`mobile-nav-link ${isActive('/private') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Private</Link>
+                <Link to="/shop" className={`mobile-nav-link ${isActive('/shop') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Shop</Link>
                 <Link to="/about" className={`mobile-nav-link ${isActive('/about') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>About Us</Link>
                 <Link to="/contact" className={`mobile-nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>Contact</Link>
               </nav>
@@ -4173,6 +4432,8 @@ function App() {
       touchMultiplier: 2
     });
 
+    window.lenis = lenis;
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -4187,6 +4448,7 @@ function App() {
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      window.lenis = null;
       lenis.destroy();
       // Remove ticker listener based on function reference if we had stored it, but since we didn't, this relies on React cleanup.
     };
@@ -4194,11 +4456,13 @@ function App() {
 
   return (
     <Router basename="/conservart/">
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/corporate" element={<Corporate />} />
           <Route path="/private" element={<Private />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
