@@ -1007,11 +1007,33 @@ function FrameVisualizer({
         backgroundColor: '#050505',
         borderTop: '1px solid var(--border)',
         position: 'relative',
-        zIndex: 10,
+        zIndex: isMobile && showMobileControls ? 3000 : 10,
         paddingTop: isMobile ? '110px' : undefined,
         paddingBottom: isMobile ? '1rem' : undefined
       }}
     >
+      <AnimatePresence>
+        {isMobile && showMobileControls && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowMobileControls(false)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              backdropFilter: 'blur(5px)',
+              WebkitBackdropFilter: 'blur(5px)',
+              zIndex: 99,
+              pointerEvents: 'auto'
+            }}
+          />
+        )}
+      </AnimatePresence>
       <div className="container" style={{ position: 'relative', textAlign: 'center', marginBottom: isMobile ? '0.5rem' : 'var(--space-md)' }}>
         {!isMobile && <span style={{ color: 'var(--accent)', letterSpacing: '0.2em', fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 600 }}>Archival Preview</span>}
         <h2 style={{ fontSize: isMobile ? '1.4rem' : '2.5rem', marginTop: '0.5rem', marginBottom: isMobile ? '0' : 'var(--space-xs)', letterSpacing: '0.02em', paddingRight: isMobile ? '30px' : '0' }}>Interactive Frame Visualizer</h2>
