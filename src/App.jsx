@@ -1715,6 +1715,167 @@ function Shop() {
     </div>
   );
 }
+function OurCollectionsSection({ onTryFrame }) {
+  const [selectedMoulding, setSelectedMoulding] = useState(null);
+
+  return (
+    <section className="section" style={{ backgroundColor: '#050505', position: 'relative', zIndex: 10, padding: '5rem 0' }}>
+      <div className="container" style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
+        <span style={{ color: 'var(--accent)', letterSpacing: '0.2em', fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 600 }}>Archival Selection</span>
+        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', marginTop: '0.5rem', marginBottom: 'var(--space-sm)' }}>Our Collections</h2>
+        <p style={{ color: '#ccc', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem' }}>
+          Explore our extensive library of bespoke mouldings, from classic ornate museum frames to sleek modern profiles.
+        </p>
+      </div>
+
+      <div className="container">
+        <div className="moulding-grid">
+          {/* Classic */}
+          <div
+            onClick={() => setSelectedMoulding('classic')}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1.5rem', transition: 'all 0.3s ease' }}
+            className="moulding-card-hover"
+          >
+            <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff', fontFamily: 'var(--font-heading)' }}>CLASSIC</h3>
+            <img src="/conservart/images/chevron_stack_classic.png" alt="Classic Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+            <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '1rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs &bull; Click</span>
+          </div>
+
+          {/* Modern */}
+          <div
+            onClick={() => setSelectedMoulding('modern')}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1.5rem', transition: 'all 0.3s ease' }}
+            className="moulding-card-hover"
+          >
+            <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff', fontFamily: 'var(--font-heading)' }}>MODERN</h3>
+            <img src="/conservart/images/chevron_stack_modern.png" alt="Modern Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+            <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '1rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs &bull; Click</span>
+          </div>
+
+          {/* Wood */}
+          <div
+            onClick={() => setSelectedMoulding('wood')}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1.5rem', transition: 'all 0.3s ease' }}
+            className="moulding-card-hover"
+          >
+            <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff', fontFamily: 'var(--font-heading)' }}>WOOD</h3>
+            <img src="/conservart/images/chevron_stack_wood.png" alt="Wood Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+            <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '1rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs &bull; Click</span>
+          </div>
+
+          {/* Floating Pro */}
+          <div
+            onClick={() => setSelectedMoulding('floating')}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1.5rem', transition: 'all 0.3s ease' }}
+            className="moulding-card-hover"
+          >
+            <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff', fontFamily: 'var(--font-heading)' }}>FLOATING PRO</h3>
+            <img src="/conservart/images/chevron_stack_floating.png" alt="Floating Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
+            <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '1rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs &bull; Click</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Specifications Drawer */}
+      <AnimatePresence>
+        {selectedMoulding && (
+          <>
+            <motion.div
+              className="spec-drawer-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedMoulding(null)}
+            />
+            <motion.div
+              className="spec-drawer"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+            >
+              <div className="container" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)', alignItems: 'center', position: 'relative' }}>
+                <button
+                  onClick={() => setSelectedMoulding(null)}
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    right: '10px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#fff',
+                    fontSize: '2rem',
+                    cursor: 'pointer'
+                  }}
+                  aria-label="Close details"
+                >
+                  &times;
+                </button>
+
+                <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
+                  <img
+                    src={MOULDING_SPECS[selectedMoulding].img}
+                    alt={MOULDING_SPECS[selectedMoulding].title}
+                    style={{ width: '80%', maxHeight: '250px', objectFit: 'contain', mixBlendMode: 'screen' }}
+                  />
+                </div>
+
+                <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <span style={{ color: 'var(--accent)', letterSpacing: '0.15em', fontSize: '0.8rem', fontWeight: 600 }}>TECHNICAL SPECIFICATIONS</span>
+                  <h3 style={{ fontSize: '1.8rem', color: '#fff', margin: 0, fontFamily: 'var(--font-heading)' }}>
+                    {MOULDING_SPECS[selectedMoulding].title}
+                  </h3>
+
+                  <p style={{ color: '#ccc', fontSize: '1rem', lineHeight: '1.7', margin: 0 }}>
+                    {MOULDING_SPECS[selectedMoulding].desc}
+                  </p>
+
+                  <table style={{ width: '100%', borderCollapse: 'collapse', color: '#ccc', marginTop: '0.5rem' }}>
+                    <tbody>
+                      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '150px' }}>Profile Width:</td>
+                        <td style={{ padding: '0.5rem 0' }}>{MOULDING_SPECS[selectedMoulding].width}</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold' }}>Rabbet Depth:</td>
+                        <td style={{ padding: '0.5rem 0' }}>{MOULDING_SPECS[selectedMoulding].rabbet}</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                        <td style={{ padding: '0.5rem 0', fontWeight: 'bold' }}>Core Material:</td>
+                        <td style={{ padding: '0.5rem 0' }}>{MOULDING_SPECS[selectedMoulding].core}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                    <button
+                      onClick={() => {
+                        onTryFrame(MOULDING_SPECS[selectedMoulding].visualizerStyle);
+                        setSelectedMoulding(null);
+                      }}
+                      className="btn"
+                      style={{ fontSize: '0.85rem', background: 'var(--accent)', color: '#000', fontWeight: 'bold', border: 'none' }}
+                    >
+                      Try in Live Visualizer
+                    </button>
+                    <button
+                      onClick={() => setSelectedMoulding(null)}
+                      className="btn"
+                      style={{ fontSize: '0.85rem' }}
+                    >
+                      Back to Gallery
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
 function Home() {
   const [activeFrame, setActiveFrame] = useState(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -1734,6 +1895,9 @@ function Home() {
         activeFrame={activeFrame}
         setActiveFrame={setActiveFrame}
       />
+
+      {/* Our Collections Section (Visible on both desktop & mobile) */}
+      <OurCollectionsSection onTryFrame={handleTryFrame} />
 
       <SlantedDivider direction="up" from="#050505" to="#0a0a0a" />
 
@@ -2596,159 +2760,19 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
   if (isMobile) {
     return (
       <section className="section" style={{ backgroundColor: '#050505', position: 'relative', zIndex: 10, paddingTop: '120px' }}>
-        <div className="container" style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: 'var(--space-sm)' }}>Our Collections</h2>
-          <p style={{ color: '#ccc', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem' }}>
-            Explore our extensive library of bespoke mouldings, from classic ornate museum frames to sleek modern profiles.
+        <div className="container" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <span style={{ color: 'var(--accent)', letterSpacing: '0.25em', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
+            01 — ARCHIVAL ARTISTRY
+          </span>
+          <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem', color: '#fff', fontFamily: 'var(--font-heading)', lineHeight: 1.3 }}>
+            Elevating <span style={{ color: 'var(--accent)' }}>Frame</span> design to Museum Standard.
+          </h2>
+          <p style={{ color: '#ccc', maxWidth: '600px', margin: '0 auto', fontSize: '0.95rem', lineHeight: '1.6' }}>
+            Conservart has worked with Montreal's finest galleries, collectors, and corporate spaces. Our interactive visualizer showcases the materials and technical details behind our award-winning framing process.
           </p>
         </div>
 
-        <div className="container">
-          <div className="moulding-grid">
-            {/* Classic */}
-            <div
-              onClick={() => setSelectedMoulding('classic')}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1rem', transition: 'all 0.3s ease' }}
-              className="moulding-card-hover"
-            >
-              <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>CLASSIC</h3>
-              <img src="/conservart/images/chevron_stack_classic.png" alt="Classic Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
-              <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
-            </div>
-
-            {/* Modern */}
-            <div
-              onClick={() => setSelectedMoulding('modern')}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1rem', transition: 'all 0.3s ease' }}
-              className="moulding-card-hover"
-            >
-              <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>MODERN</h3>
-              <img src="/conservart/images/chevron_stack_modern.png" alt="Modern Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
-              <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
-            </div>
-
-            {/* Wood */}
-            <div
-              onClick={() => setSelectedMoulding('wood')}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1rem', transition: 'all 0.3s ease' }}
-              className="moulding-card-hover"
-            >
-              <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>WOOD</h3>
-              <img src="/conservart/images/chevron_stack_wood.png" alt="Wood Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
-              <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
-            </div>
-
-            {/* Floating Pro */}
-            <div
-              onClick={() => setSelectedMoulding('floating')}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border)', borderRadius: '8px', padding: '1rem', transition: 'all 0.3s ease' }}
-              className="moulding-card-hover"
-            >
-              <h3 style={{ fontSize: '1.2rem', letterSpacing: '0.1em', marginBottom: 'var(--space-sm)', color: '#fff' }}>FLOATING PRO</h3>
-              <img src="/conservart/images/chevron_stack_floating.png" alt="Floating Frames" style={{ width: '100%', objectFit: 'contain', mixBlendMode: 'screen', maxHeight: '180px' }} />
-              <span style={{ color: 'var(--accent)', fontSize: '0.8rem', marginTop: '0.5rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>View Specs Drawer &bull; Click</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Specifications Drawer */}
-        <AnimatePresence>
-          {selectedMoulding && (
-            <>
-              <motion.div
-                className="spec-drawer-backdrop"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedMoulding(null)}
-              />
-              <motion.div
-                className="spec-drawer"
-                initial={{ y: '100%' }}
-                animate={{ y: 0 }}
-                exit={{ y: '100%' }}
-                transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-              >
-                <div className="container" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)', alignItems: 'center', position: 'relative' }}>
-                  <button
-                    onClick={() => setSelectedMoulding(null)}
-                    style={{
-                      position: 'absolute',
-                      top: '-10px',
-                      right: '10px',
-                      background: 'none',
-                      border: 'none',
-                      color: '#fff',
-                      fontSize: '2rem',
-                      cursor: 'pointer'
-                    }}
-                    aria-label="Close details"
-                  >
-                    &times;
-                  </button>
-
-                  <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
-                    <img
-                      src={MOULDING_SPECS[selectedMoulding].img}
-                      alt={MOULDING_SPECS[selectedMoulding].title}
-                      style={{ width: '80%', maxHeight: '250px', objectFit: 'contain', mixBlendMode: 'screen' }}
-                    />
-                  </div>
-
-                  <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <span style={{ color: 'var(--accent)', letterSpacing: '0.15em', fontSize: '0.8rem', fontWeight: 600 }}>TECHNICAL SPECIFICATIONS</span>
-                    <h3 style={{ fontSize: '1.8rem', color: '#fff', margin: 0, fontFamily: 'var(--font-heading)' }}>
-                      {MOULDING_SPECS[selectedMoulding].title}
-                    </h3>
-
-                    <p style={{ color: '#ccc', fontSize: '1rem', lineHeight: '1.7', margin: 0 }}>
-                      {MOULDING_SPECS[selectedMoulding].desc}
-                    </p>
-
-                    <table style={{ width: '100%', borderCollapse: 'collapse', color: '#ccc', marginTop: '0.5rem' }}>
-                      <tbody>
-                        <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                          <td style={{ padding: '0.5rem 0', fontWeight: 'bold', width: '150px' }}>Profile Width:</td>
-                          <td style={{ padding: '0.5rem 0' }}>{MOULDING_SPECS[selectedMoulding].width}</td>
-                        </tr>
-                        <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                          <td style={{ padding: '0.5rem 0', fontWeight: 'bold' }}>Rabbet Depth:</td>
-                          <td style={{ padding: '0.5rem 0' }}>{MOULDING_SPECS[selectedMoulding].rabbet}</td>
-                        </tr>
-                        <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                          <td style={{ padding: '0.5rem 0', fontWeight: 'bold' }}>Core Material:</td>
-                          <td style={{ padding: '0.5rem 0' }}>{MOULDING_SPECS[selectedMoulding].core}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-                      <button
-                        onClick={() => {
-                          onTryFrame(MOULDING_SPECS[selectedMoulding].visualizerStyle);
-                          setSelectedMoulding(null);
-                        }}
-                        className="btn"
-                        style={{ fontSize: '0.85rem', background: 'var(--accent)', color: '#000', fontWeight: 'bold', border: 'none' }}
-                      >
-                        Try in Live Visualizer
-                      </button>
-                      <button
-                        onClick={() => setSelectedMoulding(null)}
-                        className="btn"
-                        style={{ fontSize: '0.85rem' }}
-                      >
-                        Back to Gallery
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        <div style={{ marginTop: 'var(--space-lg)' }}>
+        <div style={{ marginTop: '1rem' }}>
           <FrameVisualizer
             activeFrame={activeFrame}
             setActiveFrame={setActiveFrame}
