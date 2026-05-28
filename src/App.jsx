@@ -958,7 +958,18 @@ function FrameVisualizer({
   };
 
   return (
-    <section id="frame-visualizer-section" className="section" style={{ backgroundColor: '#050505', borderTop: '1px solid var(--border)', position: 'relative', zIndex: 10, paddingBottom: isMobile ? '1rem' : undefined }}>
+    <section
+      id="frame-visualizer-section"
+      className="section"
+      style={{
+        backgroundColor: '#050505',
+        borderTop: '1px solid var(--border)',
+        position: 'relative',
+        zIndex: 10,
+        paddingTop: isMobile ? '110px' : undefined,
+        paddingBottom: isMobile ? '1rem' : undefined
+      }}
+    >
       <div className="container" style={{ position: 'relative', textAlign: 'center', marginBottom: isMobile ? '0.5rem' : 'var(--space-md)' }}>
         {!isMobile && <span style={{ color: 'var(--accent)', letterSpacing: '0.2em', fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 600 }}>Archival Preview</span>}
         <h2 style={{ fontSize: isMobile ? '1.4rem' : '2.5rem', marginTop: '0.5rem', marginBottom: isMobile ? '0' : 'var(--space-xs)', letterSpacing: '0.02em', paddingRight: isMobile ? '30px' : '0' }}>Interactive Frame Visualizer</h2>
@@ -2759,29 +2770,16 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
 
   if (isMobile) {
     return (
-      <section className="section" style={{ backgroundColor: '#050505', position: 'relative', zIndex: 10, paddingTop: '120px' }}>
-        <div className="container" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem', color: '#fff', fontFamily: 'var(--font-heading)', lineHeight: 1.3 }}>
-            Elevating <span style={{ color: 'var(--accent)' }}>Frame</span> design to Museum Standard.
-          </h2>
-          <p style={{ color: '#ccc', maxWidth: '600px', margin: '0 auto', fontSize: '0.95rem', lineHeight: '1.6' }}>
-            Conservart has worked with Montreal's finest galleries, collectors, and corporate spaces. Our interactive visualizer showcases the materials and technical details behind our award-winning framing process.
-          </p>
-        </div>
-
-        <div style={{ marginTop: '1rem' }}>
-          <FrameVisualizer
-            activeFrame={activeFrame}
-            setActiveFrame={setActiveFrame}
-            selectedArt={selectedArt}
-            setSelectedArt={setSelectedArt}
-            matColor={matColor}
-            setMatColor={setMatColor}
-            matWidth={matWidth}
-            setMatWidth={setMatWidth}
-          />
-        </div>
-      </section>
+      <FrameVisualizer
+        activeFrame={activeFrame}
+        setActiveFrame={setActiveFrame}
+        selectedArt={selectedArt}
+        setSelectedArt={setSelectedArt}
+        matColor={matColor}
+        setMatColor={setMatColor}
+        matWidth={matWidth}
+        setMatWidth={setMatWidth}
+      />
     );
   }
 
