@@ -2761,9 +2761,6 @@ function MouldingPortfolio({ onTryFrame, activeFrame, setActiveFrame }) {
     return (
       <section className="section" style={{ backgroundColor: '#050505', position: 'relative', zIndex: 10, paddingTop: '120px' }}>
         <div className="container" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <span style={{ color: 'var(--accent)', letterSpacing: '0.25em', fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
-            01 — ARCHIVAL ARTISTRY
-          </span>
           <h2 style={{ fontSize: '1.8rem', marginBottom: '1rem', color: '#fff', fontFamily: 'var(--font-heading)', lineHeight: 1.3 }}>
             Elevating <span style={{ color: 'var(--accent)' }}>Frame</span> design to Museum Standard.
           </h2>
