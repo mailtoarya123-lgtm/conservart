@@ -798,6 +798,48 @@ function FrameVisualizer({
     setFrameStyle(FRAMES[newIndex].id);
   };
 
+  // Mobile autoplay/auto-scroll carousel logic
+  useEffect(() => {
+    if (!isMobile) return;
+
+    let autoplayActive = true;
+    let interactionTimeout;
+
+    const resetAutoplayTimer = () => {
+      autoplayActive = false;
+      clearTimeout(interactionTimeout);
+      interactionTimeout = setTimeout(() => {
+        autoplayActive = true;
+      }, 5000); // Resume autoplay after 5 seconds of inactivity
+    };
+
+    const handleInteraction = () => {
+      resetAutoplayTimer();
+    };
+
+    const container = previewBoxRef.current;
+    if (container) {
+      container.addEventListener('touchstart', handleInteraction, { passive: true });
+      container.addEventListener('mousedown', handleInteraction, { passive: true });
+    }
+
+    const interval = setInterval(() => {
+      if (autoplayActive && !isDragging) {
+        const nextIdx = (currentFrameIndex + 1) % FRAMES.length;
+        setFrameStyle(FRAMES[nextIdx].id);
+      }
+    }, 3000); // 3 seconds interval
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(interactionTimeout);
+      if (container) {
+        container.removeEventListener('touchstart', handleInteraction);
+        container.removeEventListener('mousedown', handleInteraction);
+      }
+    };
+  }, [isMobile, isDragging, currentFrameIndex]);
+
   const handleDragStart = (e) => {
     if (e.button !== undefined && e.button !== 0) return;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
